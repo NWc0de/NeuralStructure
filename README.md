@@ -1,2 +1,2 @@
 # NeuralStructure
-NeuralStructure is home to a interdisciplinary capstone project based at UW that aims to extract three dimensional models of neurons from image stacks collected via electron microscopy.
+This repository is home to a interdisciplinary capstone project based at UW that aims to catalogue quantitative metrics on spinules while exploring the prospect of improving meshing algorithms for 3D reconstructions of highly focused, small scale neural structures. 
