@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+
+\begin{titlepage}
+	\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+	\center
+
+	%------------------------------------------------
+	%	Headings
+	%------------------------------------------------
+
+	\textsc{\LARGE University of Washington}\\[1.5cm]
+
+	\textsc{\Large School of Interdisciplinary Arts and Sciences}\\[0.5cm]
+
+	\textsc{\large Department of Mathematics}\\[0.5cm]
+
+	%------------------------------------------------
+	%	Title
+	%------------------------------------------------
+
+	\HRule\\[0.4cm]
+
+	{\Large\bfseries Improving Meshing Algorithms for 3D Neuronal Reconstructions in Pursuit of Quantitative Spinule Analysis}\\[0.4cm]
+
+	\HRule\\[1.5cm]
+
+	%------------------------------------------------
+	%	Author(s)
+	%------------------------------------------------
+
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushleft}
+			\large
+			\textit{Authors}\\
+			Spencer  \textsc{Little} \\
+			Kathryn \textsc{Davidson}
+		\end{flushleft}
+	\end{minipage}
+	~
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushright}
+			\large
+			\textit{Supervisors}\\
+			Dr. Maurine \textsc{Kennedy} \\
+			Dr. Marc \textsc{Nahmani}
+		\end{flushright}
+	\end{minipage}
+
+	%------------------------------------------------
+	%	Date
+	%------------------------------------------------
+
+	\vfill\vfill\vfill % Position the date 3/4 down the remaining page
+
+	{\large\today} % Date, change the \today to a set date if you want to be precise
+
+	%------------------------------------------------
+	%	Logo
+	%------------------------------------------------
+
+	%\vfill\vfill
+	%\includegraphics[width=0.2\textwidth]{placeholder.jpg}\\[1cm] % Include a department/university logo - this will require the graphicx package
+
+	%----------------------------------------------------------------------------------------
+
+	\vfill
+
+\end{titlepage}
+
+
+\title{Capstone Proposal}
+\author{Spencer Little, Kathryn Davidson}
+\date{August 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+In recent years there have been great strides in the pursuit of mapping, measuring, and visualizing neurons from electron microscopy (EM) data. These stacks of images represent cross sections of neural tissue and contain invaluable insight into the machinations of neurons. However, there is a need for algorithmic processing and reconstruction of 3D morphology to extract useful biological data. Precise 3D models can help neuroscientists map the connectome, determine the nature of specific synaptic connections \cite{abdellah2018neuromorphovis}, and closely observe specific structures within a sample.
+
+There are a plethora of open source tools available that can perform automated tracing and reconstruction of 3D simulations from EM data \cite{gerhard2013segmented}. However, the precision of surface detail available at the level of focus of the individual synapse is often insufficient and in need of improvement. Despite the impressive resolution in which the data are collected (4nm per image), algorithms used for reconstructing small and intricate structures often produce biologically improbable results due to subtle flaws in the mesh reconstruction algorithms. Mesh reconstruction is a computer modeling technique that uses vertices, edges, and surfaces in three dimensional space to model an image. There are a plethora of different shapes that can be used to compose a cohesive structure from the vertices, however the most common is the polygonal mesh. Reconstruct, a program designed to reconstruct three dimensional models of neurons from the cross sectional images produced by electron microscopy uses polygonal meshes to form its simulations. We suspect that some property of the meshing process employed by Reconstruct causes the extraneous, rigid angles observed in reconstructions. The meshing algorithm used tends to create acute angles in the surface of the reconstruction which do not reflect the actual appearance of the structure. A major focus of our capstone will be exploring alternative algorithmic processes in the hopes of remedying these issues.
+
+We hypothesize the true shape of these structures to be much smoother due to properties of the universal biological membrane, the phospholipid bilayer. The phospholipid bilayer is a fundamental component for all cell and organelle membranes. Due to their amphipathic nature, the molecules that make up this structure spontaneously assemble to in order to protect their hydrophobic tails from aqueous environments. We commonly see phospholipids form spherical structures (micelles) or bilayer sheets with slight curvature \cite{molecularbio}. Although these membranes are flexible, it is highly improbable a biological structure would exhibit the jagged ridges we see in our 3D model.
+
+Our efforts will be focused on capturing the dynamic structure of synaptic spinules. Though the true function of spinules remain somewhat of a mystery, we hope the proposed improvements in imaging technology may allow us to make more precise quantitative characterizations of these structures by analyzing surface area and volumes between different spinules within our provided EM images. Further, we hope this data will contribute a necessary stepping stone in determining the biological function of synaptic spinules.
+
+Perhaps the most comprehensive examination of spinule structure and function to date comes from Ronald S. Petralia and his team of researchers. Spinules are best described as “invaginating projections” which most commonly emerge from the postsynaptic and project into presynaptic terminal \cite{petralia2015structure}. Several studies show how spinule formation occurs upon the induction of long-term potentiation (LTP) in rat hippocampal slices \cite{petralia2015structure}. In a separate study, researchers followed axospinous synapses in rat dentate gyrus eight hours following stimulation via electrode. They found a significant increase in synapses containing spinules in certain areas of the dentate \cite{schuster1990spinules}. This evidenced a strong link in spinule formation in accordance with synaptic efficacy, but no conclusions could be made as to what processes the spinule actually facilitates.
+
+In this project we will focus on the modelling algorithms of Reconstruct, an open source tool written by John C. Fiali and hosted by Kristen M. Harris, PI, at http://synapseweb.clm.utexas.edu/.  We will explore the meshing algorithms used to model neuronal structures, discuss and theorize potential ways to improve the linking of separate image slices so that the surface of the final simulation adheres to biological principles, and implement and test a modified algorithm to determine the impact of the changes on volumetric and surface area calculations. Reconstruct allows its user to set measurements by calibrating a known length to a specific pixel length via a calibration specimen. Using the known thickness of each serial section (z-length) allows Reconstruct to automatically calculate accurate 3D measurements \cite{fiala2005reconstruct}. For our purposes, we will focus on the surface area and volume outputs from the object list displays. We will focus specifically on the spinule; a type of postsynaptic projection whose function is not conclusively known. We will explore structural changes between individual spinules in greater depth as a result of the improvement in our 3D imaging tools. Through this research, it is our hope that we gain better insight into the potential function of these fascinating structures.
+
+\section{Methods}
+
+\begin{enumerate}
+    \item \textit{Souce Code Analysis:}
+    One of the main computational challenges of this project will be analyzing the Reconstruct source code to determine how meshes are generated from contour lines within the cross sectional images produced by electron microscopy. This will require identifying the files/sections of code in which the mesh algorithms are implemented so that these blocks may be customized. We will assume that traces of relevant structures are already present; we will not be focused on automated recognition of specific structures.
+    \item \textit{Structure Simulation:}
+    John Fiali’s initial paper in which Reconstruct was introduced \cite{fiala2005reconstruct} offers some insight into the algorithmic processes involved in reconstructing the simulations. There are several references in the paper to something Ciali calls “Boissant surfaces”. The meaning of this term is elucidated in a comment in the source code (specifically in boissant.cpp). The author notes that they have made use of an algorithm developed by Jean-Daniel Boissant to construct tetrahedral meshes that model the volume, and consequenty surface, of the object. What Ciali refers to as “Boissant surfaces” \cite{fiala2005reconstruct} are tetrahedral meshes constructed using the Delaunay triangulation of a set of points (which in this case are defined by the traces in the respective planar cross sections). Given a Euclidean space and a set of $n$ points in that space the Delaunay triangulation is defined by forming a triangulation of the points in which every triangle has an empty circumcircle (there are no points within the circumcircle). A circumcircle is a circle that passes through each point of a triangle. Due to the fact that Delaunay triangulations contain a minimum spanning tree this process can be reduced to finding the shortest path through a directed graph given appropriately weighted edges \cite{boissonnat1988shape}. There are several mesh reconstruction augmentations that we may explore, one of which is Ruppert’s algorithm. Ruppert's algorithm works with a constrained Delaunay triangulation which improves meshes by adding Steiner points. This algorithm begins by cutting out all vertices in the mesh with an interior angle less than 45° to form a simpler mesh with “rounder triangles”. It adds the Steiner points to repair the Delaunay triangulation \cite{sack1999handbook}. Ruppert’s algorithm may prove to be a valuable asset in simplifying and smoothing our meshes. The space for computational analysis of these processes is rich and will prove to provide a comprehensive foundation for discussion before more advanced topics are covered later in the project.
+    \item \textit{Mesh Algorithm Analysis:}
+    After studying and documenting the methods Reconstruct employs to create 3D surfaces we will then begin researching alternative methods. There are several other intriguing algorithms for mesh generation that we may explore, all of which are due to research in fluid dynamics. Two of the techniques that we may look into are cartesian meshes, which make use of cubes with edges parallel to an xyz axis to construct surfaces \cite{berger1998aspects}, and adaptive meshes which are designed to model the flow of fluids \cite{cristini2001adaptive} and thus may be a more suitable model for biological structures. There are numerous resources available to acquire information on these algorithms; neuron reconstruction tools that have recently been released \cite{abdellah2018neuromorphovis} may prove to a promising resource. We may also consult some applied topology texts \cite{sack1999handbook} or various other resources on the web
+    %Lecture notes on Delaunay triangulation: https://www.google.com/url?q=https://www.ti.inf.ethz.ch/ew/Lehre/CG13/lecture/Chapter%25206.pdf&sa=D&ust=1567026597667000&usg=AFQjCNFiJZmvN4NKB8SYywKR60G6HFpVFw
+    to determine how we might be able to construct simulations that faithfully represent their biological incarnation.
+    \item \textit{Mesh Algorithm Development:}
+    With the requisite knowledge acquired the process of theorizing and developing an improved meshing algorithm can begin. We may explore homotopy, a type of morphing in which the surfaces linking traces between each cross section are blended into each other creating more gradual, rounded edges \cite{bajaj1996arbitrary}. This will likely begin a review of recently published literature pertaining to novel reconstruction methods which we will use to later establish theoretical models to be implemented within Reconstruct in the form of a forked version of the project on Github.
+    \item \textit{Algorithm Testing and Use Cases:}
+    Finally we will be able to compare volumetric and surface area results between computations performed with the original algorithm and computations performed with the augmented algorithm. In this stage we will be determining the impact of the changes made and assessing the efficacy of the new model. We will now be able to examine spinule metrics in depth and begin to assess the quantitative features of these structures.
+
+\end{enumerate}
+
+\bibliographystyle{unsrt}
+\bibliography{refs}
+
+\end{document}
